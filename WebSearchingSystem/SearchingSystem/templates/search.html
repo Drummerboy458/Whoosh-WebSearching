@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>快狗搜索-要快还是快狗快</title>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+        <!--[if lt IE 9]><script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script><![endif]-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.9.0/underscore-min.js"></script>
+        <script type="text/javascript" src="/scripts/dengdu/dengdu.js"></script>
+     <style type="text/css">
+         input:focus
+        {
+            background-color:floralwhite;
+        }
+        p b.match{font-size:18px;color:red;}
+         .TbwUpd {
+        padding-bottom: 0px;
+        padding-top: 1px;
+        }
+        .TbwUpd {
+            line-height: 1.57;
+        }
+        .TbwUpd {
+            display: inline-block;
+        }
+        .iUh30 {
+    font-size: 16px;
+    padding-top: 1px;
+    line-height: 1.5;
+    }
+    a:focus{
+        color:palevioletred;
+    }
+    .a, cite, cite a:link, cite a:visited, .cite, .cite:link, #nygTcd>i, .bc a:link {
+        color: #006621;
+        font-style: normal;
+    }
+    cite {
+        font-style: italic;
+    }
+    .TbwUpd {
+        line-height: 1.57;
+    }
+    a:link, .w, .q:active, .q:visited {
+        cursor: pointer;
+    }
+    </style>
+    </head>
+    <body style=" min-height: 100%; background-color:#f5f5f5">
+        <div class="tab-content " style="width:50%">
+            <div role="tabpanel" class="tab-pane active text-center" id="home">
+                <div class="input-group " style="margin-top: 20px;border-radius: 20px;">
+                    <div style="display:flex; ">
+                        <div style="margin-left:10px;margin-right:20px;">
+                            <a href="/"><img src="{{ url_for('static', filename='logo.png')}}" style="height:80px;width = 80px"/></a>
+                        </div>
+                        <div style="height:80px; width:600px;">
+                             <input type="text" style="border:2px solid;border-radius:25px;height:50px;" class="form-control "  id ="query" value = {{query}}>
+                        </div>
+                        <div style=" height:50px; width:20px;">
+                            <span class="input-group-btn">
+                                <button class="btn btn-default" type="button" style="border:2px solid;border-radius:25px;height:50px;"><a href="" id="search">搜索</a></button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="margin-left:160px;">
+            <button style="border:2px solid; border-color:purple; border-radius:25px;height:40px;">
+                <a href="" id="name" style="color: black;"> 按姓名检索</a>
+            </button>
+            <button style="border:2px solid; border-color:purple; border-radius:25px;height:40px;">
+                <a href="" id="job" style="color: black;"> 按职称检索</a>
+            </button>
+             <button style="border:2px solid; border-color:purple; border-radius:25px;height:40px;">
+                 <a href="" id="researchArea" style="color: black;"> 按研究方向检索</a>
+            </button>
+            <button style="border:2px solid; border-color:purple; border-radius:25px;height:40px;">
+               <a href="" id="site" style="color: black;"> site服务</a>
+            </button>
+            <button style="border:2px solid; border-color:purple; border-radius:25px;height:40px;">
+               <a href="" id="filetype" style="color: black;"> filetype服务</a>
+            </button>
+        </div>
+        <hr>
+        <div style="position: absolute;color: #70757a;padding-left: 16px;padding-top: 0;
+        padding-bottom: 0;padding-right: 8px;overflow: hidden;text-overflow: ellipsis;white-space:nowrap;
+        margin-left:150px;">
+            找到约 {{nums}} 条结果 <nobr>（用时 {{time}} 秒）</nobr>
+        </div>
+        <div class="row"> <!--两列-->
+            <div class="col-md-8" id="container" style="margin-right:80px;">  <!--搜索结果列-->
+                <div class="content" style="margin-left:150px;margin-top:50px; min-height: 400px;">
+                    {% for detail in details %}
+                    <div style="padding:3px  3px; margin-left:20px; width:100%;">
+                        <a target="_blank" href={{detail.link}}>
+                            <h3>{{ detail.title | safe}}</h3>
+                            <div class = "TbwUpd">
+                                <cite class="iUh30 bc">
+                                   {{detail.link}}
+                                </cite>
+                            </div>
+                        </a>
+                        <a target="_blank" style="height:20px;" href="{{ url_for('static', filename=detail.snapshot)}}">
+                            <b style="padding:5px; 5px; color:gray;">网页快照</b>
+                        </a>
+                        <p style="font-size:16px;">{{detail.description | safe}}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="col-md-2" >  <!--右侧热搜榜-->
+                <h3><i class="fa fa-angle-right"></i> 大家都在搜:</h4>
+                <div id="container" > 
+                    <hr class="style-one" style="opacity: 0">
+                        <div style="background-color: rgb(247,247,247); border-radius: 30px;">
+                            {% for item in items %}
+                                <p style="color: purple ;font-size: 16px; padding: 5px 5px;text-align: left;">
+                                 <b style="text-align: left;padding: 30px 30px;">NO.{{ loop.index }}: &nbsp;&nbsp;</b>
+                                 <b style="color: black;">{{item}} </b>
+                                 </p>
+                                {% endfor %}
+                        </div>
+                </div>
+            </div> <!--分两列-->
+        </div>
+       
+        <div style="margin-left:300px;margin-top:50px;">
+            {{ pagination.links }}
+        </div>
+     <script type="text/javascript">
+    $(document).ready(function(){
+       //点击链接的时候调用
+      $("#search").click(function(){
+
+          //得到input的值
+          var query = $("#query").val();
+
+          //设置查询的href的值
+          $("#search").attr("href","?q=" + query + "&target=resume");
+      });
+
+      $("#name").click(function(){
+
+          //得到input的值
+          var query = $("#query").val();
+
+          //设置查询的href的值
+          $("#name").attr("href","?q=" + query + "&target=name");
+      });
+
+      $("#job").click(function(){
+
+          //得到input的值
+          var query = $("#query").val();
+
+          //设置查询的href的值
+          $("#job").attr("href","?q=" + query + "&target=job");
+      });
+
+      $("#researchArea").click(function(){
+
+          //得到input的值
+          var query = $("#query").val();
+
+          //设置查询的href的值
+          $("#researchArea").attr("href","?q=" + query+ "&target=researchArea");
+      });
+
+      $("#site").click(function(){
+
+          //得到input的值
+          var query = $("#query").val();
+
+          //设置查询的href的值
+          $("#site").attr("href","?q=" + query + "&target=link");
+      });
+       $("#filetype").click(function(){
+
+          //得到input的值
+          var query = $("#query").val();
+
+          //设置查询的href的值
+          $("#filetype").attr("href","?q=" + query + "&target=filetype");
+      });
+    });
+    </script>
+        <footer style="background: rgba(47,119,145,0.19);padding:20px 20px;position:relative;bottom:0;width:100%;height:100px;color:black;font-size: large; " class="text-center">
+          ©版权所有 falalala<br>
+          意见反馈请询 <a style="color:black;font-size: large;" target="_blank"; href="https://drummerboy458.github.io/">drummerboy458.github.io</a>
+        </footer>
+    </body>
+</html>
